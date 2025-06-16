@@ -23,10 +23,10 @@ variable "nsg_name" {
   default = "tempvm-nsg"
 }
 
-variable "shutdown_schedule_name" {
-  type    = string
-  default = "shutdown-computevm-tempvm"
-}
+# variable "shutdown_schedule_name" {
+#   type    = string
+#   default = "shutdown-computevm-tempvm"
+# }
 
 variable "admin_password" {
   type      = string
