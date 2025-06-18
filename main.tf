@@ -20,9 +20,7 @@ resource "azurerm_network_security_group" "nsg" {
     destination_address_prefix = "*"
   }
 
-  tags = {
-    "created-by" = "Manual"
-  }
+  tags = local.tags
 }
 
 resource "azurerm_public_ip" "pip" {
@@ -34,9 +32,7 @@ resource "azurerm_public_ip" "pip" {
   zones               = ["1", "2", "3"]
   ip_version          = "IPv4"
 
-  tags = {
-    "created-by" = "Manual"
-  }
+  tags = local.tags
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -51,9 +47,7 @@ resource "azurerm_virtual_network" "vnet" {
     security_group   = azurerm_network_security_group.nsg.id
   }
 
-  tags = {
-    "created-by" = "Manual"
-  }
+  tags = local.tags
 }
 
 resource "azurerm_network_interface" "nic" {
@@ -69,9 +63,7 @@ resource "azurerm_network_interface" "nic" {
     private_ip_address_version    = "IPv4"
   }
 
-  tags = {
-    "created-by" = "Manual"
-  }
+  tags = local.tags
 }
 
 resource "azurerm_windows_virtual_machine" "vm" {
@@ -97,9 +89,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
     version   = "latest"
   }
 
-  tags = {
-    "created-by" = "Manual"
-  }
+  tags = local.tags
 }
 
 # resource "azurerm_dev_test_schedule" "shutdown" {

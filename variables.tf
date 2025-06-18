@@ -34,6 +34,20 @@ variable "admin_password" {
 }
 
 variable "admin_username" {
-  type    = string
-  default = "ad"
+  type = string
+  # default = "ad"
+}
+
+variable "subscription_id" {
+  type      = string
+  sensitive = true
+}
+
+locals {
+  tags = {
+    cost-center = "azurevm"
+    environment = "dev"
+    team        = "briane"
+    created-by  = "terraform"
+  }
 }
