@@ -23,11 +23,6 @@ variable "nsg_name" {
   default = "tempvm-nsg"
 }
 
-# variable "shutdown_schedule_name" {
-#   type    = string
-#   default = "shutdown-computevm-tempvm"
-# }
-
 variable "admin_password" {
   type      = string
   sensitive = true
@@ -51,6 +46,23 @@ variable "vm_size" {
     condition     = contains(["Standard_B2s", "Standard_B2ms"], var.vm_size)
     error_message = "VM size must be Standard_B2s or Standard_B2ms."
   }
+}
+
+variable "shutdown_email" {
+  type        = string
+  description = "Email address to send shutdown notifications."
+}
+
+variable "shutdown_time" {
+  type        = string
+  description = "Time to schedule the VM shutdown in UTC (e.g., '2200')."
+  default     = "2200"
+}
+
+variable "shutdown_time_timezone" {
+  type        = string
+  description = "Timezone for the shutdown schedule (e.g., 'UTC')."
+  default     = "Mountain Standard Time"
 }
 
 locals {

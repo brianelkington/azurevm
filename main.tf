@@ -92,19 +92,17 @@ resource "azurerm_windows_virtual_machine" "vm" {
   tags = local.tags
 }
 
-# resource "azurerm_dev_test_schedule" "shutdown" {
-#   name                = var.shutdown_schedule_name
-#   location            = azurerm_resource_group.rg.location
-#   resource_group_name = azurerm_resource_group.rg.name
-#   lab_name            = "devtestvmlab"
-#   task_type           = "ComputeVmShutdownTask"
-#   status              = "Enabled"
-#   time_zone_id        = "Mountain Standard Time"
-#   daily_recurrence {
-#     time = "1900"
-#   }
-#   notification_settings {
-#     status          = "Enabled"
-#     time_in_minutes = 30
-#   }
-# }
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "shutdown" {
+  virtual_machine_id    = azurerm_windows_virtual_machine.vm.id
+  location              = azurerm_resource_group.rg.location
+  enabled               = true
+  daily_recurrence_time = var.shutdown_time
+  timezone              = var.shutdown_time_timezone
+
+  notification_settings {
+    enabled         = true
+    time_in_minutes = "30"
+    # webhook_url     = ""
+    email = var.shutdown_email
+  }
+}
