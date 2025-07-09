@@ -66,6 +66,10 @@ resource "azurerm_windows_virtual_machine" "vm" {
   patch_mode               = "AutomaticByOS"
   enable_automatic_updates = true
 
+  depends_on = [
+    azurerm_role_assignment.des_keyvault_crypto_user
+  ]
+
   tags = local.tags
 }
 
@@ -119,6 +123,10 @@ resource "azurerm_key_vault_key" "kvk" {
   key_size     = 2048
   key_opts     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
 
+  depends_on = [
+    azurerm_role_assignment.key_vault_admin
+  ]
+
   tags = local.tags
 }
 
@@ -166,6 +174,10 @@ resource "azurerm_role_assignment" "key_vault_admin" {
   scope                = azurerm_key_vault.kv.id
   role_definition_name = "Key Vault Administrator"
   principal_id         = data.azurerm_client_config.current.object_id
+
+  depends_on = [
+    azurerm_key_vault.kv
+  ]
 }
 
 resource "azurerm_role_assignment" "des_keyvault_crypto_user" {
