@@ -1,12 +1,12 @@
 # Azure VM Terraform Deployment
 
-This project uses [Terraform](https://www.terraform.io/) to provision a Windows Virtual Machine and supporting Azure resources in Azure. It includes security best practices such as disk encryption, managed identities, network segmentation, and an automatic daily shutdown schedule for cost savings.
+This project uses [Terraform](https://www.terraform.io/) to provision a Windows Virtual Machine and supporting Azure resources in Azure. It includes security best practices such as disk encryption, managed identities, network segmentation, RBAC, and an automatic daily shutdown schedule for cost savings.
 
 ## Resources Created
 
 - Resource Group
 - Virtual Network with Segmented Subnets (`default`, `vm-subnet`)
-- Network Security Group (with RDP rule)
+- Network Security Group (with RDP rule restricted to your IP)
 - Public IP Address
 - Network Interface (attached to `vm-subnet`)
 - Windows Virtual Machine (with managed identity, disk encryption, and automatic updates)
@@ -25,9 +25,10 @@ This project uses [Terraform](https://www.terraform.io/) to provision a Windows 
 1. **Clone this repository** and navigate to the project directory.
 
 2. **Configure your variables**  
-   Edit `terraform.tfvars` with your Azure subscription ID, admin username, password, shutdown notification email, and other required values:
+   Edit `terraform.tfvars` with your Azure subscription ID, admin username, password, shutdown notification email, and your public IP for RDP access:
    ```hcl
    admin_username    = "your-username"
    admin_password    = "your-password"
    subscription_id   = "your-subscription-id"
    shutdown_email    = "your-email@example.com"
+   allowed_rdp_ip    = "YOUR.PUBLIC.IP.ADDRESS" # e.g., "203.0.113.45"

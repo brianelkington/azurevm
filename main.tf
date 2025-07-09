@@ -16,7 +16,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "3389"
-    source_address_prefix      = "*"
+    source_address_prefix      = var.allowed_rdp_ip
     destination_address_prefix = "*"
   }
 

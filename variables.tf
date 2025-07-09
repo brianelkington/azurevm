@@ -65,6 +65,11 @@ variable "shutdown_time_timezone" {
   default     = "Mountain Standard Time"
 }
 
+variable "allowed_rdp_ip" {
+  description = "The public IP address allowed to RDP to the VM"
+  type        = string
+}
+
 locals {
   tags = {
     cost-center = "azurevm"
