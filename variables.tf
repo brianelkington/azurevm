@@ -10,17 +10,17 @@ variable "nic_name" {
 
 variable "public_ip_name" {
   type    = string
-  default = "tempvm-ip"
+  default = "ip-tempvm"
 }
 
 variable "vnet_name" {
   type    = string
-  default = "tempvm-vnet"
+  default = "vnet-tempvm"
 }
 
 variable "nsg_name" {
   type    = string
-  default = "tempvm-nsg"
+  default = "nsg-tempvm"
 }
 
 variable "admin_password" {
