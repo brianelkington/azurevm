@@ -43,6 +43,16 @@ variable "subscription_id" {
   sensitive = true
 }
 
+variable "vm_size" {
+  type        = string
+  description = "The size of the virtual machine."
+  default     = "Standard_B2s"
+  validation {
+    condition     = contains(["Standard_B2s", "Standard_B2ms"], var.vm_size)
+    error_message = "VM size must be Standard_B2s or Standard_B2ms."
+  }
+}
+
 locals {
   tags = {
     cost-center = "azurevm"

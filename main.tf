@@ -70,7 +70,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   name                  = var.vm_name
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
-  size                  = "Standard_B2s"
+  size                  = var.vm_size
   admin_username        = var.admin_username
   admin_password        = var.admin_password
   network_interface_ids = [azurerm_network_interface.nic.id]
