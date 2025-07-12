@@ -185,3 +185,8 @@ resource "azurerm_role_assignment" "des_keyvault_crypto_user" {
   role_definition_name = "Key Vault Crypto Service Encryption User"
   principal_id         = azurerm_disk_encryption_set.des.identity[0].principal_id
 }
+
+output "vm_public_ip" {
+  description = "The public IP address of the VM"
+  value       = azurerm_public_ip.pip.ip_address
+}
