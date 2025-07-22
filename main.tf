@@ -170,6 +170,48 @@ resource "azurerm_network_interface" "nic" {
   tags = local.tags
 }
 
+# Storage account for data container. Prevents accidental deletion.
+resource "azurerm_storage_account" "sa" {
+  name                     = "st${var.vm_name}"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  tags = local.tags
+}
+
+# Blob container to hold VM data
+resource "azurerm_storage_container" "data" {
+  name                  = "data"
+  storage_account_name  = azurerm_storage_account.sa.name
+  container_access_type = "private"
+}
+
+# File share for Windows drive mapping
+resource "azurerm_storage_share" "data" {
+  name                 = "data"
+  storage_account_name = azurerm_storage_account.sa.name
+  quota                = 5120
+}
+
+# Map storage share to D: drive on VM creation
+resource "azurerm_virtual_machine_extension" "map_data_drive" {
+  name                 = "MapDataDrive"
+  virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.10"
+
+  settings = jsonencode({
+    commandToExecute = "powershell -Command \"cmdkey /add:${azurerm_storage_account.sa.name}.file.core.windows.net /user:Azure\\${azurerm_storage_account.sa.name} /pass:${azurerm_storage_account.sa.primary_access_key}; New-PSDrive -Name 'D' -PSProvider FileSystem -Root \\\\${azurerm_storage_account.sa.name}.file.core.windows.net\\data -Persist\""
+  })
+}
+
 resource "azurerm_role_assignment" "key_vault_admin" {
   scope                = azurerm_key_vault.kv.id
   role_definition_name = "Key Vault Administrator"
