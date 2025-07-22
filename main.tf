@@ -1,6 +1,12 @@
 resource "azurerm_resource_group" "rg" {
   name     = "rg-${var.vm_name}"
   location = "West US 2"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  tags = local.tags
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -206,7 +212,7 @@ resource "azurerm_role_assignment" "vm_share_contributor" {
   principal_id         = azurerm_windows_virtual_machine.vm.identity[0].principal_id
 }
 
-# Map storage share to Z: drive on VM creation
+# Map storage share to S: drive on VM creation
 resource "azurerm_virtual_machine_extension" "map_data_drive" {
   name                 = "MapDataDrive"
   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
@@ -215,7 +221,7 @@ resource "azurerm_virtual_machine_extension" "map_data_drive" {
   type_handler_version = "1.10"
 
   settings = jsonencode({
-    commandToExecute = "powershell -Command \"Set-Content -Path 'C:\\map-drive.ps1' -Value \"cmdkey /add:${azurerm_storage_account.sa.name}.file.core.windows.net /user:Azure\\\\${azurerm_storage_account.sa.name} /pass:${azurerm_storage_account.sa.primary_access_key}; New-PSDrive -Name 'Z' -PSProvider FileSystem -Root \\\\\\\\${azurerm_storage_account.sa.name}.file.core.windows.net\\\\data -Persist\" -Force; schtasks.exe /Create /TN MapDataDrive /TR \"powershell -ExecutionPolicy Bypass -File C:\\map-drive.ps1\" /SC ONLOGON /RL HIGHEST /RU SYSTEM /F; powershell -ExecutionPolicy Bypass -File C:\\map-drive.ps1; exit 0\""
+    commandToExecute = "powershell -Command \"Set-Content -Path 'C:\\map-drive.ps1' -Value \"cmdkey /add:${azurerm_storage_account.sa.name}.file.core.windows.net /user:Azure\\\\${azurerm_storage_account.sa.name} /pass:${azurerm_storage_account.sa.primary_access_key}; New-PSDrive -Name 'S' -PSProvider FileSystem -Root \\\\\\\\${azurerm_storage_account.sa.name}.file.core.windows.net\\\\data -Persist\" -Force; schtasks.exe /Create /TN MapDataDrive /TR \"powershell -ExecutionPolicy Bypass -File C:\\map-drive.ps1\" /SC ONLOGON /RL HIGHEST /RU SYSTEM /F; powershell -ExecutionPolicy Bypass -File C:\\map-drive.ps1; exit 0\""
   })
 }
 

@@ -38,4 +38,4 @@ This project uses [Terraform](https://www.terraform.io/) to provision a Windows 
    terraform init
    terraform apply
    ```
-   The VM creates a scheduled task that maps the `data` share to the `Z:` drive whenever a user logs in, so no manual steps are required.
+   The VM creates a scheduled task that maps the `data` share to the `S:` drive whenever a user logs in, so no manual steps are required.
