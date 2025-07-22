@@ -172,7 +172,7 @@ resource "azurerm_network_interface" "nic" {
 
 # Storage account for data container. Prevents accidental deletion.
 resource "azurerm_storage_account" "sa" {
-  name                     = "st${var.vm_name}"
+  name                     = "stvm${var.vm_name}"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
