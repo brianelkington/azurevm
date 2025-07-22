@@ -199,7 +199,7 @@ resource "azurerm_storage_share" "data" {
   quota                = 5120
 }
 
-# Map storage share to D: drive on VM creation
+# Map storage share to Z: drive on VM creation
 resource "azurerm_virtual_machine_extension" "map_data_drive" {
   name                 = "MapDataDrive"
   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
@@ -208,7 +208,7 @@ resource "azurerm_virtual_machine_extension" "map_data_drive" {
   type_handler_version = "1.10"
 
   settings = jsonencode({
-    commandToExecute = "powershell -Command \"cmdkey /add:${azurerm_storage_account.sa.name}.file.core.windows.net /user:Azure\\${azurerm_storage_account.sa.name} /pass:${azurerm_storage_account.sa.primary_access_key}; New-PSDrive -Name 'D' -PSProvider FileSystem -Root \\\\${azurerm_storage_account.sa.name}.file.core.windows.net\\data -Persist\""
+    commandToExecute = "powershell -Command \"cmdkey /add:${azurerm_storage_account.sa.name}.file.core.windows.net /user:Azure\\${azurerm_storage_account.sa.name} /pass:${azurerm_storage_account.sa.primary_access_key}; New-PSDrive -Name 'Z' -PSProvider FileSystem -Root \\\\${azurerm_storage_account.sa.name}.file.core.windows.net\\data -Persist\""
   })
 }
 
