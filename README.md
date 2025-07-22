@@ -38,4 +38,4 @@ This project uses [Terraform](https://www.terraform.io/) to provision a Windows 
    terraform init
    terraform apply
    ```
-   The VM will automatically map the `data` share to the `D:` drive.
+   The VM will automatically map the `data` share to the `Z:` drive.
