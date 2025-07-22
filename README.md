@@ -12,7 +12,8 @@ This project uses [Terraform](https://www.terraform.io/) to provision a Windows 
 - Windows Virtual Machine (with managed identity, disk encryption, and automatic updates)
 - Key Vault and Key for disk encryption
 - Disk Encryption Set
-- VM Auto-shutdown Schedule (8pm Mountain Time, with email notification)
+- Storage Account with `data` blob container and file share (protected from destroy)
+- VM Auto-shutdown Schedule
 - RBAC role assignments for secure access
 
 ## Prerequisites
@@ -23,12 +24,18 @@ This project uses [Terraform](https://www.terraform.io/) to provision a Windows 
 ## Usage
 
 1. **Clone this repository** and navigate to the project directory.
-
-2. **Configure your variables**  
+2. **Configure your variables**
    Edit `terraform.tfvars` with your Azure subscription ID, admin username, password, shutdown notification email, and your public IP for RDP access:
    ```hcl
-   admin_username    = "your-username"
-   admin_password    = "your-password"
-   subscription_id   = "your-subscription-id"
-   shutdown_email    = "your-email@example.com"
-   allowed_rdp_ip    = "YOUR.PUBLIC.IP.ADDRESS" # e.g., "203.0.113.45"
+   admin_username  = "your-username"
+   admin_password  = "your-password"
+   subscription_id = "your-subscription-id"
+   shutdown_email  = "your-email@example.com"
+   allowed_rdp_ip  = "YOUR.PUBLIC.IP.ADDRESS" # e.g., "203.0.113.45"
+   ```
+3. **Deploy the infrastructure**
+   ```bash
+   terraform init
+   terraform apply
+   ```
+   The VM will automatically map the `data` share to the `D:` drive.
