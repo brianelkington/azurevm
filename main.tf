@@ -194,14 +194,14 @@ resource "azurerm_storage_account" "sa" {
 # Blob container to hold VM data
 resource "azurerm_storage_container" "data" {
   name                  = "data"
-  storage_account_name  = azurerm_storage_account.sa.name
+  storage_account_id    = azurerm_storage_account.sa.id
   container_access_type = "private"
 }
 
 # File share for Windows drive mapping
 resource "azurerm_storage_share" "data" {
   name                 = "data"
-  storage_account_name = azurerm_storage_account.sa.name
+  storage_account_id   = azurerm_storage_account.sa.id
   quota                = 5120
 }
 
