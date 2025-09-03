@@ -5,7 +5,7 @@ variable "vm_name" {
 
 variable "nic_name" {
   type    = string
-  default = "tempvm535"
+  default = "nic-tempvm535"
 }
 
 variable "public_ip_name" {

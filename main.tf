@@ -2,10 +2,6 @@ resource "azurerm_resource_group" "rg" {
   name     = "rg-${var.vm_name}"
   location = "West US 2"
 
-  lifecycle {
-    prevent_destroy = true
-  }
-
   tags = local.tags
 }
 
@@ -178,15 +174,11 @@ resource "azurerm_network_interface" "nic" {
 
 # Storage account for data container. Prevents accidental deletion.
 resource "azurerm_storage_account" "sa" {
-  name                     = "stvm${var.vm_name}"
+  name                     = "savm${var.vm_name}"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
-  lifecycle {
-    prevent_destroy = true
-  }
 
   tags = local.tags
 }
