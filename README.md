@@ -12,7 +12,7 @@ This project uses [Terraform](https://www.terraform.io/) to provision a Windows 
 - Windows Virtual Machine (with managed identity, disk encryption, and automatic updates)
 - Key Vault and Key for disk encryption
 - Disk Encryption Set
-- Storage Account with `data` blob container and file share (protected from destroy)
+- Storage Account with `data` blob container and file share
 - VM Auto-shutdown Schedule
 - RBAC role assignments for secure access
 
