@@ -192,9 +192,9 @@ resource "azurerm_storage_container" "data" {
 
 # File share for Windows drive mapping
 resource "azurerm_storage_share" "data" {
-  name                 = "data"
-  storage_account_id   = azurerm_storage_account.sa.id
-  quota                = 5120
+  name               = "data"
+  storage_account_id = azurerm_storage_account.sa.id
+  quota              = 5120
 }
 
 # Allow the VM to access the storage share
@@ -213,7 +213,7 @@ resource "azurerm_virtual_machine_extension" "map_data_drive" {
   type_handler_version = "1.10"
 
   settings = jsonencode({
-    commandToExecute = "powershell -Command \"Set-Content -Path 'C:\\map-drive.ps1' -Value \"cmdkey /add:${azurerm_storage_account.sa.name}.file.core.windows.net /user:Azure\\\\${azurerm_storage_account.sa.name} /pass:${azurerm_storage_account.sa.primary_access_key}; New-PSDrive -Name 'S' -PSProvider FileSystem -Root \\\\\\\\${azurerm_storage_account.sa.name}.file.core.windows.net\\\\data -Persist\" -Force; schtasks.exe /Create /TN MapDataDrive /TR \"powershell -ExecutionPolicy Bypass -File C:\\map-drive.ps1\" /SC ONLOGON /RL HIGHEST /RU SYSTEM /F; powershell -ExecutionPolicy Bypass -File C:\\map-drive.ps1; exit 0\""
+    commandToExecute = "powershell -Command \"Set-Content -Path 'C:\\map-drive.ps1' -Value \"cmdkey /add:${azurerm_storage_account.sa.name}.file.core.windows.net /user:Azure\\\\${azurerm_storage_account.sa.name} /pass:${azurerm_storage_account.sa.primary_access_key}; New-PSDrive -Name 'S' -PSProvider FileSystem -Root \\\\\\\\${azurerm_storage_account.sa.name}.file.core.windows.net\\\\data -Persist\" -Force; schtasks.exe /Create /TN MapDataDrive /TR \"powershell -ExecutionPolicy Bypass -File C:\\map-drive.ps1\" /SC ONLOGON /RL HIGHEST /RU ${var.admin_username} /RP ${var.admin_password} /F; powershell -ExecutionPolicy Bypass -File C:\\map-drive.ps1; exit 0\""
   })
 }
 
