@@ -213,8 +213,11 @@ resource "azurerm_virtual_machine_extension" "map_data_drive" {
   type_handler_version = "1.10"
 
   settings = jsonencode({
-    fileUris         = ["${path.module}/scripts/map-drive.ps1"]
-    commandToExecute = "powershell -ExecutionPolicy Bypass -File map-drive.ps1 -StorageAccountName ${azurerm_storage_account.sa.name} -ShareName ${azurerm_storage_share.data.name} -AccountKey ${azurerm_storage_account.sa.primary_access_key} -AdminUser ${var.admin_username} -AdminPassword ${var.admin_password}"
+    fileUris = ["${path.module}/scripts/map-drive.ps1"]
+  })
+
+  protected_settings = jsonencode({
+    commandToExecute = "powershell -ExecutionPolicy Bypass -File map-drive.ps1 -StorageAccountName ${azurerm_storage_account.sa.name} -ShareName ${azurerm_storage_share.data.name} -AccountKey ${azurerm_storage_account.sa.primary_access_key} -DriveLetter S"
   })
 
   depends_on = [
