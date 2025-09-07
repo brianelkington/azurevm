@@ -70,11 +70,15 @@ variable "allowed_rdp_ip" {
   type        = string
 }
 
+resource "time_static" "created" {}
+
 locals {
   tags = {
     cost-center = "azurevm"
     environment = "dev"
     team        = "briane"
     created-by  = "terraform"
+    created-on  = time_static.created.rfc3339
+    updated-on  = timestamp()
   }
 }
