@@ -65,8 +65,8 @@ resource "azurerm_windows_virtual_machine" "vm" {
     type = "SystemAssigned"
   }
 
-  patch_mode               = "AutomaticByOS"
-  enable_automatic_updates = true
+  patch_mode = "AutomaticByOS"
+  # enable_automatic_updates = true
 
   depends_on = [
     azurerm_role_assignment.des_keyvault_crypto_user
@@ -113,7 +113,7 @@ resource "azurerm_key_vault" "kv" {
   sku_name                   = "standard"
   purge_protection_enabled   = true
   soft_delete_retention_days = 7
-  enable_rbac_authorization  = true
+  rbac_authorization_enabled = true
 
   tags = local.tags
 }

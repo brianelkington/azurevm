@@ -79,6 +79,6 @@ locals {
     team        = "briane"
     created-by  = "terraform"
     created-on  = time_static.created.rfc3339
-    updated-on  = timestamp()
+    # updated-on  = timestamp()
   }
 }
