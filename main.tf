@@ -205,23 +205,23 @@ resource "azurerm_role_assignment" "vm_share_contributor" {
 }
 
 # Map storage share to S: drive on VM creation
-resource "azurerm_virtual_machine_extension" "map_data_drive" {
-  name                 = "MapDataDrive"
-  virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
-  publisher            = "Microsoft.Compute"
-  type                 = "CustomScriptExtension"
-  type_handler_version = "1.10"
+# resource "azurerm_virtual_machine_extension" "map_data_drive" {
+#   name                 = "MapDataDrive"
+#   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
+#   publisher            = "Microsoft.Compute"
+#   type                 = "CustomScriptExtension"
+#   type_handler_version = "1.10"
 
-  settings = jsonencode({})
+#   settings = jsonencode({})
 
-  protected_settings = jsonencode({
-    commandToExecute = "powershell -ExecutionPolicy Bypass -Command '${replace(file("scripts/map-drive.ps1"), "\\n", "`n")}' -StorageAccountName ${azurerm_storage_account.sa.name} -ShareName ${azurerm_storage_share.data.name} -AccountKey ${azurerm_storage_account.sa.primary_access_key} -DriveLetter S"
-  })
+#   protected_settings = jsonencode({
+#     commandToExecute = "powershell -ExecutionPolicy Bypass -Command '${replace(file("scripts/map-drive.ps1"), "\\n", "`n")}' -StorageAccountName ${azurerm_storage_account.sa.name} -ShareName ${azurerm_storage_share.data.name} -AccountKey ${azurerm_storage_account.sa.primary_access_key} -DriveLetter S\r\n"
+#   })
 
-  depends_on = [
-    azurerm_role_assignment.vm_share_contributor
-  ]
-}
+#   depends_on = [
+#     azurerm_role_assignment.vm_share_contributor
+#   ]
+# }
 
 resource "azurerm_role_assignment" "key_vault_admin" {
   scope                = azurerm_key_vault.kv.id
